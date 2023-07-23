@@ -13,34 +13,44 @@ class Animal():
         self.direcaoX = 'direita' # direita / esquerda
         self.direcaoY = 'cima' # cima / baixo
 
+        self.game.tabuleiro[posY][posX].append(self)
+
+        
+
     def andar(self):
+        oldX = self.pos[0]
+        oldY = self.pos[1]
+
         if self.game.turno % 2 == 0:
             if self.direcaoX == 'direita':
-                if self.pos[0] + self.vel > len(self.game.tabuleiro):
-                    self.pos[0] = len(self.game.tabuleiro)
+                if self.pos[0] + self.vel >= len(self.game.tabuleiro)-1:
+                    self.pos[0] = len(self.game.tabuleiro)-1
                     self.direcaoX = 'esquerda'
                 else:
                     self.pos[0] += self.vel
             else:
                 if self.pos[0] - self.vel < 1:
-                    self.pos[0] = 1
+                    self.pos[0] = 0
                     self.direcaoX = 'direita'
                 else:
                     self.pos[0] -= self.vel
         
         else:
             if self.direcaoY == 'cima':
-                if self.pos[1] + self.vel > len(self.game.tabuleiro):
-                    self.pos[1] = len(self.game.tabuleiro)
+                if self.pos[1] + self.vel >= len(self.game.tabuleiro)-1:
+                    self.pos[1] = len(self.game.tabuleiro)-1
                     self.direcaoY = 'baixo'
                 else:
                     self.pos[1] += self.vel
             else:
                 if self.pos[1] - self.vel < 1:
-                    self.pos[1] = 1
+                    self.pos[1] = 0
                     self.direcaoY = 'cima'
                 else:
                     self.pos[1] -= self.vel
+        
+        self.game.tabuleiro[oldY][oldX].remove(self)
+        self.game.tabuleiro[self.pos[1]][self.pos[0]].append(self)
         self.game.turno += 1
     
     def checar_colisao(self, nome_colisao):
