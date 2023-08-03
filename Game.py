@@ -1,12 +1,20 @@
 import pygame
 from GameObjects import *
 
-# PALETA:   
+# PALETA 1:   
 # https://lospec.com/gallery/retronova/arctic-mint
 # rgb(16, 48, 64)
 # rgb(113, 189, 174) - branco tabuleiro
 # rgb(186, 217, 207)
 # rgb(19, 128, 128) - preto tabuleiro
+
+# PALETA 2:   
+# https://lospec.com/palette-list/leopolds-dreams
+# rgb(55, 33, 52)
+# rgb(71, 68, 118)
+# rgb(72, 136, 183)
+# rgb(109, 188, 185)
+# rgb(140, 239, 182)
 
 class Game:
     def __init__(self):
@@ -14,12 +22,13 @@ class Game:
         self.SCREENSIZE = (600,600)
         pygame.init()
         self.screen = pygame.display.set_mode(self.SCREENSIZE)
-        pygame.display.set_caption('Forca')
+        pygame.display.set_caption('Floresta')
         self.clock = pygame.time.Clock()
         self.running = True
         self.GAMESTATE = 'jogo'
         self.tileSize = 50
         self.animais = []
+        self.checar_colisoes = False
 
         #tabuleiro 10x10
         #ordem das nested lists: [linha][coluna](essa ultima é formada por listas dentro, porque pode ter mais de um animal na mesma casa)
@@ -35,6 +44,8 @@ class Game:
             [[], [], [], [], [], [], [], [], [], []],
             [[], [], [], [], [], [], [], [], [], []]
             ]
+        
+        self.textos_temporarios = [['BEM VINDOS',36,(300,300), True, (255, 255, 255), 60*3]] #Usado pra armazenar textos que mostrarão por uma quantia de tempo pré-determinada
     
     def mostrar_texto(self,texto,tamanho,pos,centered = False, color = (255,255,255)):
         font = pygame.font.Font('Minecraft.ttf',tamanho)
@@ -51,6 +62,8 @@ class Game:
         self.animais = []
         self.player = Leao('jorge','azul','macho',3,150,40,1,1,self,15)
         self.animais.append(self.player)
+        self.animal1 = Pulga('aipim','preto','femea',0,0.4,5,6,3,self,14)
+        self.animais.append(self.animal1)
     
     def rodar(self):
         while self.running:
@@ -64,9 +77,15 @@ class Game:
                     if self.GAMESTATE == 'jogo':
                         tecla = pygame.key.name(event.key)
                         if tecla == 'space':
-                            self.player.andar()
+                            if self.player.stamina > 0:
+                                self.player.andar()
+                                self.checar_colisoes = True
+                            else:
+                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (94, 20, 15), 60])
                         if tecla == 'r':
                             self.debug()
+                        if tecla == 't':
+                            self.novoJogo()
 
                         
                     if self.GAMESTATE == 'gameover':
@@ -75,7 +94,26 @@ class Game:
             
             # ------------- TICK -------------
             if self.GAMESTATE == 'jogo':
-                pass
+
+                for animal in self.animais:
+                    if self.checar_colisoes == False:
+                        break
+                    if animal == self.player:
+                        continue
+                    if self.player.checar_colisao(animal) == True:
+                        if isinstance(self.player, Leao):
+                            self.player.rugir(animal)
+                        elif isinstance(self.player, Cachorro):
+                            self.player.latir(animal)
+                        elif isinstance(self.player, Gato):
+                            self.player.miar(animal)
+                        elif isinstance(self.player, Vaca):
+                            self.player.mugir(animal)
+                        elif isinstance(self.player, Ovelha):
+                            self.player.balir(animal)
+                        elif isinstance(self.player, Pulga):
+                            self.player.sugar(animal)
+                    self.checar_colisoes = False
             
             elif self.GAMESTATE == 'gameover':
                 pass
@@ -101,6 +139,16 @@ class Game:
 
 
                 self.mostrar_texto('Floresta de Animais',36,(300,30), True, (113, 189, 174))
+                self.mostrar_texto(f'Turno: {self.turno} - Stamina: {self.player.stamina}/{self.player.max_stamina}',24,(50,570), False, (113, 189, 174))
+
+                if len(self.textos_temporarios) > 0:
+                    for texto in self.textos_temporarios:
+                        if texto[-1] <= 0: #se tiver acabado o tempo do texto na tela
+                            self.textos_temporarios.remove(texto)
+                        else:
+                            self.mostrar_texto(texto[0],texto[1],texto[2],texto[3],texto[4])
+                            texto[-1] -= 1
+
 
             elif self.GAMESTATE == 'gameover':
                 pass

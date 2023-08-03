@@ -1,0 +1,12 @@
+LEAO - Caso qualquer animal encontre com um leão, o leão irá matá-lo. Caso um leão encontre com outro leão, o de
+idade mais avançada irá matar o mais novo.
+
+CACHORRO - cachorro mata gato
+
+GATO - morre pro cachorro
+
+VACA - ela muda todos os outros animais (fora o jogador) para um lugar aleatório
+
+PULGA - suga 3 de stamina
+ 
+OVELHA - dá 2 de stamina por que ela é aconchegante
