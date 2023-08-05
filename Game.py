@@ -1,5 +1,6 @@
 import pygame
 from GameObjects import *
+from random import randint
 
 # PALETA 1:   
 # https://lospec.com/gallery/retronova/arctic-mint
@@ -58,12 +59,34 @@ class Game:
         self.screen.blit(text,textRect)
     
     def novoJogo(self):
+        self.tabuleiro =  [
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []],
+            [[], [], [], [], [], [], [], [], [], []]
+            ]
         self.turno = 1
         self.animais = []
-        self.player = Leao('jorge','azul','macho',3,150,40,1,1,self,15)
+        self.player = Leao('jorge','azul','macho',3,150,40,0,0,self,15)
         self.animais.append(self.player)
-        self.animal1 = Pulga('aipim','preto','femea',0,0.4,5,6,3,self,14)
+        self.animal1 = Pulga('aipim','preto','femea',0,0.4,6,randint(0,9),randint(0,9),self,2)
         self.animais.append(self.animal1)
+        '''
+        self.animal2 = Vaca('aurora','malhado','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
+        self.animais.append(self.animal2)
+        self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
+        self.animais.append(self.animal3)
+        self.animal4 = Gato('mingau','branco','femea',0,5,50,randint(0,9),randint(0,9),self,'frajola')
+        self.animais.append(self.animal4)
+        self.animal5 = Ovelha('fluminosa','branca','femea',1,80,50,randint(0,9),randint(0,9),self,4)
+        self.animais.append(self.animal5)
+        '''
     
     def rodar(self):
         while self.running:
@@ -135,8 +158,12 @@ class Game:
                         
                         
                 for animal in self.animais:
-                    self.mostrar_texto(animal.getNome(), 20, [50+self.tileSize*animal.getPos()[0]+self.tileSize/2, 50+self.tileSize*animal.getPos()[1]+self.tileSize/2], True, (186, 217, 207)) 
-
+                    img = animal.img
+                    rect = img.get_rect()
+                    rect.center = [50+self.tileSize*animal.getPos()[0]+self.tileSize/2, 50+self.tileSize*animal.getPos()[1]+self.tileSize/2]
+                    self.screen.blit(img, rect)
+                    
+                    self.mostrar_texto(animal.getNome(), 15, [50+self.tileSize*animal.getPos()[0]+self.tileSize/2, 72+self.tileSize*animal.getPos()[1]+self.tileSize/2], True, (50, 41, 71)) 
 
                 self.mostrar_texto('Floresta de Animais',36,(300,30), True, (113, 189, 174))
                 self.mostrar_texto(f'Turno: {self.turno} - Stamina: {self.player.stamina}/{self.player.max_stamina}',24,(50,570), False, (113, 189, 174))
@@ -166,6 +193,11 @@ class Game:
                     linha_atual+=str(len(coluna))
                 linha_atual+=' '
             print(linha_atual)
+        print(f'animais = {self.animais}')
+        print('')
+        print('')
+        for i in self.animais:
+            print(f'{i.getNome()} - {i.getPos()}')
 
 game = Game()
 #game.debug()

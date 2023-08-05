@@ -1,3 +1,4 @@
+import pygame
 from random import randint
 
 class Animal():
@@ -117,6 +118,7 @@ class Leao(Animal):
     def __init__(self, nome, cor, sexo, velocidade, peso, stamina, posX, posY, game, idade):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.idade = idade
+        self.img = pygame.transform.scale(pygame.image.load('Images/lion.png'), (32,32))
     
     def rugir(self, animal_presente, resposta=False):
         print('rugido raarwwwww')
@@ -154,6 +156,7 @@ class Cachorro(Animal):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.idade = idade
         self.raca = raca
+        self.img = pygame.transform.scale(pygame.image.load('Images/dog.png'), (32,32))
     
     def latir(self, animal_presente, resposta=False):
         print('latido auauauauau')
@@ -189,6 +192,7 @@ class Gato(Animal):
     def __init__(self, nome, cor, sexo, velocidade, peso, stamina, posX, posY, game, raca):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.raca = raca
+        self.img = pygame.transform.scale(pygame.image.load('Images/cat.png'), (32,32))
     
     def miar(self, animal_presente, resposta=False):
         print('miado miauuuuuuuuu')
@@ -216,6 +220,7 @@ class Vaca(Animal):
     def __init__(self, nome, cor, sexo, velocidade, peso, stamina, posX, posY, game, raca):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.raca = raca
+        self.img = pygame.transform.scale(pygame.image.load('Images/cow.png'), (32,32))
     
     def mugir(self, animal_presente, resposta=False):
         print('mugido muuuuuuuuuuuudando todos de lugar lol')
@@ -253,6 +258,7 @@ class Ovelha(Animal):
     def __init__(self, nome, cor, sexo, velocidade, peso, stamina, posX, posY, game, idade):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.idade = idade
+        self.img = pygame.transform.scale(pygame.image.load('Images/sheep.png'), (32,32))
     
     def balir(self, animal_presente, resposta=False):
         print('balindo meeeeeeeeehhh(+3 stamina)')
@@ -281,6 +287,7 @@ class Pulga(Animal):
     def __init__(self, nome, cor, sexo, velocidade, peso, stamina, posX, posY, game, idade):
         super().__init__(nome, cor, sexo, velocidade, peso, stamina, posX, posY, game)
         self.idade = idade
+        self.img = pygame.transform.scale(pygame.image.load('Images/pulga.png'), (32,32))
     
     def sugar(self, animal_presente, resposta=False):
         print('sugando glubglubglubglub')
