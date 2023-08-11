@@ -74,19 +74,11 @@ class Game:
         self.turno = 1
         self.animais = []
         self.player = Leao('jorge','azul','macho',3,150,40,0,0,self,15)
-        self.animais.append(self.player)
         self.animal1 = Pulga('aipim','preto','femea',0,0.4,6,randint(0,9),randint(0,9),self,2)
-        self.animais.append(self.animal1)
-        '''
-        self.animal2 = Vaca('aurora','malhado','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
-        self.animais.append(self.animal2)
+        self.animal2 = Vaca('aurora','malhada','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
         self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
-        self.animais.append(self.animal3)
         self.animal4 = Gato('mingau','branco','femea',0,5,50,randint(0,9),randint(0,9),self,'frajola')
-        self.animais.append(self.animal4)
         self.animal5 = Ovelha('fluminosa','branca','femea',1,80,50,randint(0,9),randint(0,9),self,4)
-        self.animais.append(self.animal5)
-        '''
     
     def rodar(self):
         while self.running:
@@ -136,7 +128,8 @@ class Game:
                             self.player.balir(animal)
                         elif isinstance(self.player, Pulga):
                             self.player.sugar(animal)
-                    self.checar_colisoes = False
+                        break
+                self.checar_colisoes = False
             
             elif self.GAMESTATE == 'gameover':
                 pass

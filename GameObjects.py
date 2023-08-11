@@ -18,7 +18,7 @@ class Animal():
         self.direcaoY = 'cima' # cima / baixo
 
         self.game.tabuleiro[posY][posX].append(self)
-
+        self.game.animais.append(self)
         
 
     def andar(self):
@@ -80,7 +80,9 @@ class Animal():
     def getPos(self):
         return self.pos
     def setPos(self, newX, newY):
+        self.game.tabuleiro[self.pos[1]][self.pos[0]].remove(self)
         self.pos = [newX, newY]
+        self.game.tabuleiro[self.pos[1]][self.pos[0]].append(self)
     
     def getNome(self):
         return self.nome
