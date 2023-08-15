@@ -80,7 +80,10 @@ class Animal():
     def getPos(self):
         return self.pos
     def setPos(self, newX, newY):
-        self.game.tabuleiro[self.pos[1]][self.pos[0]].remove(self)
+        try:
+            self.game.tabuleiro[self.pos[1]][self.pos[0]].remove(self)
+        except:
+            pass
         self.pos = [newX, newY]
         self.game.tabuleiro[self.pos[1]][self.pos[0]].append(self)
     

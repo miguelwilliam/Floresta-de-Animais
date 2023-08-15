@@ -79,6 +79,9 @@ class Game:
         self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
         self.animal4 = Gato('mingau','branco','femea',0,5,50,randint(0,9),randint(0,9),self,'frajola')
         self.animal5 = Ovelha('fluminosa','branca','femea',1,80,50,randint(0,9),randint(0,9),self,4)
+        
+        self.GAMESTATE = 'jogo'
+        self.fase_de_jogo = 0
     
     def rodar(self):
         while self.running:
@@ -90,21 +93,21 @@ class Game:
                 if event.type == pygame.KEYDOWN:
 
                     if self.GAMESTATE == 'jogo':
-                        tecla = pygame.key.name(event.key)
-                        if tecla == 'space':
+                        if event.key == pygame.K_SPACE:
                             if self.player.stamina > 0:
                                 self.player.andar()
                                 self.checar_colisoes = True
                             else:
-                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (94, 20, 15), 60])
-                        if tecla == 'r':
+                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (113, 189, 174), 60])
+                        if event.key == pygame.K_r:
                             self.debug()
-                        if tecla == 't':
+                        if event.key == pygame.K_t:
                             self.novoJogo()
 
                         
                     if self.GAMESTATE == 'gameover':
-                        pass
+                        if event.key == pygame.K_RETURN:
+                            self.novoJogo()
 
             
             # ------------- TICK -------------
@@ -130,6 +133,13 @@ class Game:
                             self.player.sugar(animal)
                         break
                 self.checar_colisoes = False
+
+                if self.player.pos == [9,9] and self.fase_de_jogo == 0:
+                    self.fase_de_jogo += 1
+                elif self.player.pos == [0,0] and self.turno != 1 and self.fase_de_jogo == 1:
+                    self.fase_de_jogo += 1
+                if self.fase_de_jogo == 2:
+                    self.GAMESTATE = 'gameover'
             
             elif self.GAMESTATE == 'gameover':
                 pass
@@ -171,7 +181,14 @@ class Game:
 
 
             elif self.GAMESTATE == 'gameover':
-                pass
+                player_img = pygame.transform.scale(self.player.img, (100,100))
+                img_rect = player_img.get_rect()
+                img_rect.center = [300,250]
+                self.screen.blit(player_img, img_rect)
+
+                self.mostrar_texto('Obrigado por jogar!',18,(300,180), True, (140, 239, 182))
+                self.mostrar_texto('Floresta de Animais',36,(300,150), True, (181, 255, 212))
+                self.mostrar_texto('Aperte ENTER para um novo jogo!',18,(300,330), True, (181, 255, 212))
             
             pygame.display.flip()
             self.clock.tick(60)
