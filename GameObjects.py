@@ -14,49 +14,59 @@ class Animal():
 
         self.game = game
         self.turno = 1
+        '''
         self.direcaoX = 'direita' # direita / esquerda
         self.direcaoY = 'cima' # cima / baixo
+        '''
 
         self.game.tabuleiro[posY][posX].append(self)
         self.game.animais.append(self)
         
 
-    def andar(self):
+    def andar(self, tecla):
         oldX = self.pos[0]
         oldY = self.pos[1]
 
-        if self.game.turno % 2 == 0:
-            if self.direcaoX == 'direita':
-                if self.pos[0] + self.vel >= len(self.game.tabuleiro)-1:
-                    self.pos[0] = len(self.game.tabuleiro)-1
-                    self.direcaoX = 'esquerda'
-                else:
-                        self.pos[0] += self.vel
+        novoX = self.pos[0]
+        novoY = self.pos[1]
+
+        if tecla == pygame.K_RIGHT:
+            self.direcao = 'direita'
+        elif tecla == pygame.K_LEFT:
+            self.direcao = 'esquerda'
+        if tecla == pygame.K_UP:
+            self.direcao = 'cima'
+        elif tecla == pygame.K_DOWN:
+            self.direcao = 'baixo'
+        print(self.direcao)
+
+        if self.direcao == 'direita':
+            if self.pos[0] + self.vel >= len(self.game.tabuleiro)-1:
+                novoX = len(self.game.tabuleiro)-1
             else:
-                if self.pos[0] - self.vel < 1:
-                    self.pos[0] = 0
-                    self.direcaoX = 'direita'
-                else:
-                    self.pos[0] -= self.vel
-            
+                novoX = self.pos[0] + self.vel
+        elif self.direcao == 'esquerda':
+            if self.pos[0] - self.vel <= 0:
+                novoX = 0
+            else:
+                novoX = self.pos[0] - self.vel
+        elif self.direcao == 'cima':
+            if self.pos[1] - self.vel <= 0:
+                novoY = 0
+            else:
+                novoY = self.pos[1] - self.vel
         else:
-            if self.direcaoY == 'cima':
-                if self.pos[1] + self.vel >= len(self.game.tabuleiro)-1:
-                    self.pos[1] = len(self.game.tabuleiro)-1
-                    self.direcaoY = 'baixo'
-                else:
-                    self.pos[1] += self.vel
+            if self.pos[1] + self.vel >= len(self.game.tabuleiro)-1:
+                novoY = len(self.game.tabuleiro)-1
             else:
-                if self.pos[1] - self.vel < 1:
-                    self.pos[1] = 0
-                    self.direcaoY = 'cima'
-                else:
-                    self.pos[1] -= self.vel
+                novoY = self.pos[1] + self.vel
         
+        self.pos = [novoX,novoY]
         self.game.tabuleiro[oldY][oldX].remove(self)
         self.game.tabuleiro[self.pos[1]][self.pos[0]].append(self)
         self.game.turno += 1
         self.stamina -= 1
+        print(self.pos)
         
         #self.game.mostrar_texto('SEM STAMINA', 40, (500, 10), False, (94, 20, 15))
     

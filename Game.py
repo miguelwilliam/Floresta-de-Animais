@@ -93,12 +93,23 @@ class Game:
                 if event.type == pygame.KEYDOWN:
 
                     if self.GAMESTATE == 'jogo':
-                        if event.key == pygame.K_SPACE:
+
+                        '''if event.key == pygame.K_SPACE:
                             if self.player.stamina > 0:
-                                self.player.andar()
+                                self.player.andar(event.key)
                                 self.checar_colisoes = True
                             else:
-                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (113, 189, 174), 60])
+                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (113, 189, 174), 60])'''
+                        
+                        if event.key in [pygame.K_UP, pygame.K_DOWN] and self.turno % 2 != 0 and self.player.stamina > 0:
+                            self.player.andar(event.key)
+                            self.checar_colisoes = True
+                        elif event.key in [pygame.K_LEFT, pygame.K_RIGHT] and self.turno % 2 == 0 and self.player.stamina > 0:
+                            self.player.andar(event.key)
+                            self.checar_colisoes = True
+                        elif event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN] and self.player.stamina <= 0:
+                            self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (87, 54, 52), 60])
+                        
                         if event.key == pygame.K_r:
                             self.debug()
                         if event.key == pygame.K_t:
