@@ -172,6 +172,17 @@ class Game:
                     
                     self.mostrar_texto(animal.getNome(), 15, [50+self.tileSize*animal.getPos()[0]+self.tileSize/2, 72+self.tileSize*animal.getPos()[1]+self.tileSize/2], True, (50, 41, 71)) 
 
+                dir_path = 'Images/dir_'
+                if self.turno % 2 == 0:
+                    dir_path += 'h.png'
+                else:
+                    dir_path += 'v.png'
+                dir_img = pygame.image.load(dir_path)
+                
+                dir_imgRect = dir_img.get_rect()
+                dir_imgRect.bottomright = (600,600)
+                self.screen.blit(dir_img,dir_imgRect)
+
                 self.mostrar_texto('Floresta de Animais',36,(300,30), True, (113, 189, 174))
                 self.mostrar_texto(f'Turno: {self.turno} - Stamina: {self.player.stamina}/{self.player.max_stamina}',24,(50,570), False, (113, 189, 174))
 
@@ -182,6 +193,7 @@ class Game:
                         else:
                             self.mostrar_texto(texto[0],texto[1],texto[2],texto[3],texto[4])
                             texto[-1] -= 1
+                
 
 
             elif self.GAMESTATE == 'gameover':

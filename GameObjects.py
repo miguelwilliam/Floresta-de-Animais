@@ -39,7 +39,6 @@ class Animal():
             self.direcao = 'cima'
         elif tecla == pygame.K_DOWN:
             self.direcao = 'baixo'
-        print(self.direcao)
 
         if self.direcao == 'direita':
             if self.pos[0] + self.vel >= len(self.game.tabuleiro)-1:
@@ -67,18 +66,12 @@ class Animal():
         self.game.tabuleiro[self.pos[1]][self.pos[0]].append(self)
         self.game.turno += 1
         self.stamina -= 1
-        print(self.pos)
         
         #self.game.mostrar_texto('SEM STAMINA', 40, (500, 10), False, (94, 20, 15))
     
     def checar_colisao(self, obj_colisao, pos):
-        
-        if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]]:
-            return True
-        
         for i in range(self.game.player.vel):
             indice = i+1
-            print(indice)
             if self.game.player.direcao == 'direita':
                 try:
                     if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]-indice]:
@@ -115,6 +108,9 @@ class Animal():
                         return True
                 except:
                     pass
+            
+            if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]]:
+                return True
         return False
 
     def imprimir_caracteristicas(self):
