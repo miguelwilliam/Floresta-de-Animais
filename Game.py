@@ -73,7 +73,7 @@ class Game:
             ]
         self.turno = 1
         self.animais = []
-        self.player = Leao('jorge','azul','macho',3,150,40,0,0,self,15)
+        self.player = Leao('jorge','azul','macho',3,150,20,0,0,self,15)
         self.animal1 = Pulga('aipim','preto','femea',0,0.4,6,randint(0,9),randint(0,9),self,2)
         self.animal2 = Vaca('aurora','malhada','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
         self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
@@ -93,13 +93,6 @@ class Game:
                 if event.type == pygame.KEYDOWN:
 
                     if self.GAMESTATE == 'jogo':
-
-                        '''if event.key == pygame.K_SPACE:
-                            if self.player.stamina > 0:
-                                self.player.andar(event.key)
-                                self.checar_colisoes = True
-                            else:
-                                self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (113, 189, 174), 60])'''
                         
                         if event.key in [pygame.K_UP, pygame.K_DOWN] and self.turno % 2 != 0 and self.player.stamina > 0:
                             self.player.andar(event.key)
@@ -110,9 +103,9 @@ class Game:
                         elif event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN] and self.player.stamina <= 0:
                             self.textos_temporarios.append(['SEM STAMINA!', 36,(300,300), True, (87, 54, 52), 60])
                         
-                        if event.key == pygame.K_r:
-                            self.debug()
                         if event.key == pygame.K_t:
+                            self.debug()
+                        if event.key == pygame.K_r:
                             self.novoJogo()
 
                         
@@ -128,8 +121,8 @@ class Game:
                     if self.checar_colisoes == False:
                         break
                     if animal == self.player:
-                        continue
-                    if self.player.checar_colisao(animal) == True:
+                        continue # Ou seja, esse loop pega todos os animais menos o jogador
+                    if self.player.checar_colisao(animal,self.player.pos) == True:
                         if isinstance(self.player, Leao):
                             self.player.rugir(animal)
                         elif isinstance(self.player, Cachorro):
@@ -221,7 +214,6 @@ class Game:
             print(f'{i.getNome()} - {i.getPos()}')
 
 game = Game()
-#game.debug()
 game.novoJogo()
 game.rodar()
 pygame.quit()

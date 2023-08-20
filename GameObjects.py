@@ -14,6 +14,7 @@ class Animal():
 
         self.game = game
         self.turno = 1
+        self.direcao = ''
         '''
         self.direcaoX = 'direita' # direita / esquerda
         self.direcaoY = 'cima' # cima / baixo
@@ -70,9 +71,50 @@ class Animal():
         
         #self.game.mostrar_texto('SEM STAMINA', 40, (500, 10), False, (94, 20, 15))
     
-    def checar_colisao(self, obj_colisao):
-        if obj_colisao in self.game.tabuleiro[self.pos[1]][self.pos[0]]:
+    def checar_colisao(self, obj_colisao, pos):
+        
+        if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]]:
             return True
+        
+        for i in range(self.game.player.vel):
+            indice = i+1
+            print(indice)
+            if self.game.player.direcao == 'direita':
+                try:
+                    if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]-indice]:
+                        self.game.player.pos = obj_colisao.pos
+                        self.game.tabuleiro[pos[1]][pos[0]].remove(self.game.player)
+                        self.game.tabuleiro[self.game.player.pos[1]][self.game.player.pos[0]].append(self.game.player)
+                        return True
+                except:
+                    pass
+            elif self.game.player.direcao == 'esquerda':
+                try:
+                    if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]+indice]:
+                        self.game.player.pos = obj_colisao.pos
+                        self.game.tabuleiro[pos[1]][pos[0]].remove(self.game.player)
+                        self.game.tabuleiro[self.game.player.pos[1]][self.game.player.pos[0]].append(self.game.player)
+                        return True
+                except:
+                    pass
+            elif self.game.player.direcao == 'cima':
+                try:
+                    if obj_colisao in self.game.tabuleiro[pos[1]+indice][pos[0]]:
+                        self.game.player.pos = obj_colisao.pos
+                        self.game.tabuleiro[pos[1]][pos[0]].remove(self.game.player)
+                        self.game.tabuleiro[self.game.player.pos[1]][self.game.player.pos[0]].append(self.game.player)
+                        return True
+                except:
+                    pass
+            elif self.game.player.direcao == 'baixo':
+                try:
+                    if obj_colisao in self.game.tabuleiro[pos[1]-indice][pos[0]]:
+                        self.game.player.pos = obj_colisao.pos
+                        self.game.tabuleiro[pos[1]][pos[0]].remove(self.game.player)
+                        self.game.tabuleiro[self.game.player.pos[1]][self.game.player.pos[0]].append(self.game.player)
+                        return True
+                except:
+                    pass
         return False
 
     def imprimir_caracteristicas(self):
