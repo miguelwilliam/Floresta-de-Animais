@@ -12,6 +12,8 @@ class Animal():
         self.max_stamina = stamina
         self.pos = [posX, posY]
 
+        self.evitar_animais = [] #lista para evitar animais que já entrou em contato anteriormente
+
         self.game = game
         self.turno = 1
         self.direcao = ''
@@ -27,6 +29,9 @@ class Animal():
     def andar(self, tecla):
         oldX = self.pos[0]
         oldY = self.pos[1]
+        for animal in self.game.tabuleiro[oldY][oldX]:
+            if animal != self:
+                self.evitar_animais.append(animal)
 
         novoX = self.pos[0]
         novoY = self.pos[1]

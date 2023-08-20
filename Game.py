@@ -73,12 +73,14 @@ class Game:
             ]
         self.turno = 1
         self.animais = []
-        self.player = Leao('jorge','azul','macho',3,150,20,0,0,self,15)
+        self.animal4 = Leao('jorge','azul','macho',3,150,20,randint(0,9),randint(0,9),self,15)
         self.animal1 = Pulga('aipim','preto','femea',0,0.4,6,randint(0,9),randint(0,9),self,2)
         self.animal2 = Vaca('aurora','malhada','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
         self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
-        self.animal4 = Gato('mingau','branco','femea',0,5,50,randint(0,9),randint(0,9),self,'frajola')
+        self.player = Gato('mingau','branco','femea',2,5,50,randint(0,9),randint(0,9),self,'frajola')
         self.animal5 = Ovelha('fluminosa','branca','femea',1,80,50,randint(0,9),randint(0,9),self,4)
+
+        self.player.setPos(0,0)
         
         self.GAMESTATE = 'jogo'
         self.fase_de_jogo = 0
@@ -120,7 +122,7 @@ class Game:
                 for animal in self.animais:
                     if self.checar_colisoes == False:
                         break
-                    if animal == self.player:
+                    if animal == self.player or animal in self.player.evitar_animais:
                         continue # Ou seja, esse loop pega todos os animais menos o jogador
                     if self.player.checar_colisao(animal,self.player.pos) == True:
                         if isinstance(self.player, Leao):
@@ -135,7 +137,8 @@ class Game:
                             self.player.balir(animal)
                         elif isinstance(self.player, Pulga):
                             self.player.sugar(animal)
-                        break
+                self.player.evitar_animais = []
+
                 self.checar_colisoes = False
 
                 if self.player.pos == [9,9] and self.fase_de_jogo == 0:
@@ -143,6 +146,8 @@ class Game:
                 elif self.player.pos == [0,0] and self.turno != 1 and self.fase_de_jogo == 1:
                     self.fase_de_jogo += 1
                 if self.fase_de_jogo == 2:
+                    self.GAMESTATE = 'gameover'
+                if self.player not in self.animais:
                     self.GAMESTATE = 'gameover'
             
             elif self.GAMESTATE == 'gameover':
