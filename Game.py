@@ -77,7 +77,7 @@ class Game:
         self.animal1 = Pulga('aipim','preto','femea',0,0.4,6,randint(0,9),randint(0,9),self,2)
         self.animal2 = Vaca('aurora','malhada','femea',0,100,50,randint(0,9),randint(0,9),self,'malhada')
         self.animal3 = Cachorro('gostoso','preto','macho',2,17,50,randint(0,9),randint(0,9),self,5,'caramelo')
-        self.player = Gato('mingau','branco','femea',2,5,50,randint(0,9),randint(0,9),self,'frajola')
+        self.player = Gato('mingau','branco','femea',2,5,20,randint(0,9),randint(0,9),self,'frajola')
         self.animal5 = Ovelha('fluminosa','branca','femea',1,80,50,randint(0,9),randint(0,9),self,4)
 
         self.player.setPos(0,0)

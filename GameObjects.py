@@ -77,7 +77,7 @@ class Animal():
     def checar_colisao(self, obj_colisao, pos):
         for i in range(self.game.player.vel):
             indice = i+1
-            if self.game.player.direcao == 'direita':
+            if self.game.player.direcao == 'direita' and pos[0] != len(self.game.tabuleiro[0]):
                 try:
                     if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]-indice]:
                         self.game.player.pos = obj_colisao.pos
@@ -86,7 +86,7 @@ class Animal():
                         return True
                 except:
                     pass
-            elif self.game.player.direcao == 'esquerda':
+            elif self.game.player.direcao == 'esquerda' and pos[0] != 0:
                 try:
                     if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]+indice]:
                         self.game.player.pos = obj_colisao.pos
@@ -95,7 +95,7 @@ class Animal():
                         return True
                 except:
                     pass
-            elif self.game.player.direcao == 'cima':
+            elif self.game.player.direcao == 'cima' and pos[1] != 0:
                 try:
                     if obj_colisao in self.game.tabuleiro[pos[1]+indice][pos[0]]:
                         self.game.player.pos = obj_colisao.pos
@@ -104,7 +104,7 @@ class Animal():
                         return True
                 except:
                     pass
-            elif self.game.player.direcao == 'baixo':
+            elif self.game.player.direcao == 'baixo' and pos[1] != len(self.game.tabuleiro):
                 try:
                     if obj_colisao in self.game.tabuleiro[pos[1]-indice][pos[0]]:
                         self.game.player.pos = obj_colisao.pos
@@ -114,8 +114,8 @@ class Animal():
                 except:
                     pass
             
-            if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]]:
-                return True
+        if obj_colisao in self.game.tabuleiro[pos[1]][pos[0]]:
+            return True
         return False
 
     def imprimir_caracteristicas(self):
